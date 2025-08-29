@@ -1,0 +1,19 @@
+{
+  "name": "engine-crm2-api",
+  "version": "1.0.0",
+  "description": "API MVC simples com CRUD, count, findAll, findById e findByName para engine_crm2",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "NODE_ENV=production node src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.3",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
