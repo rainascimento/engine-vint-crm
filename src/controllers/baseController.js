@@ -4,6 +4,8 @@ export default class BaseController {
     this.count = this.count.bind(this);
     this.findAll = this.findAll.bind(this);
     this.findById = this.findById.bind(this);
+    this.findByIdMulti = this.findByIdMulti.bind(this);
+    this.findByFk = this.findByFk.bind(this);
     this.findByName = this.findByName.bind(this);
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
@@ -39,23 +41,57 @@ export default class BaseController {
     }
   }
 
+  async findByIdMulti(req, res) {
+    try {
+
+    
+      const { id } = req.params;
+      const rows = await this.model.findByIdMulti(id);
+      res.json(rows);
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  }
+
+  async findByFk(req, res) {
+  try {
+
+ 
+
+     const fkField = req.params.fkField;
+    const  fkValue  = req.params.fkValue;
+
+    const rows = await this.model.findByFk(fkField, fkValue);
+
+
+    res.json(rows);
+  } catch (e) {
+    console.error('Erro ao buscar por FK:', e);
+    res.status(500).json({ error: 'Erro interno no servidor.', details: e.message });
+  }
+}
+
   async findByName(req, res) {
     try {
+
       const { q } = req.query;
       if (!q) return res.status(400).json({ error: 'Query param q é obrigatório' });
       const rows = await this.model.findByName(q);
       res.json(rows);
     } catch (e) {
+    
       res.status(400).json({ error: e.message });
     }
   }
 
   async create(req, res) {
     try {
+
       const created = await this.model.create(req.body);
       res.status(201).json(created);
     } catch (e) {
-      res.status(400).json({ error: e.message });
+  
+      res.status(420).json({ error: e.message });
     }
   }
 
@@ -67,6 +103,7 @@ export default class BaseController {
       const now = await this.model.findById(id);
       res.json(now);
     } catch (e) {
+
       res.status(400).json({ error: e.message });
     }
   }
@@ -78,6 +115,7 @@ export default class BaseController {
       if (!ok) return res.status(404).json({ error: 'Not found' });
       res.status(204).send();
     } catch (e) {
+
       res.status(400).json({ error: e.message });
     }
   }

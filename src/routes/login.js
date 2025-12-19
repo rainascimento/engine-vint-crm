@@ -22,12 +22,12 @@ route.post('/entrar',async (req, res, next) => {
 
     try {
 
-        console.log('pelo menos entrou', req.body)
+   
         const queryEmail = 'SELECT * FROM usuarios WHERE email = ?';
 
         const results = await execute(queryEmail, [req.body.email]);
 
-        console.log(results)
+      
         if (results.length < 1) {
             return res.status(409).send({ Mensagem: 'Não existe este email cadastrado' })
         }
@@ -62,7 +62,7 @@ route.post('/entrar',async (req, res, next) => {
 
     } catch (error) {
 
-        console.log(error)
+
         return res.status(500).send({ error: error })
         
     }
@@ -73,12 +73,12 @@ route.post('/entrar',async (req, res, next) => {
 route.post('/cadastro', async (req, res) => {
     try {
 
-        console.log('pelo menos entrou', req.body)
+      
         const queryEmail = 'SELECT * FROM usuarios WHERE email = ?';
 
         const results = await execute(queryEmail, [req.body.email]);
 
-        console.log(results)
+      
         if (results.length > 0) {
             return res.status(409).send({ Mensagem: 'Usuario já cadastrado' })
         }
@@ -103,7 +103,6 @@ route.post('/cadastro', async (req, res) => {
     }
     catch (error) {
 
-        console.log(error)
         return res.status(500).send({ Erro: error })
     }
 

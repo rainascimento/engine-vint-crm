@@ -91,6 +91,7 @@ export default class BaseModel {
     this.insertable = insertable;
     this.updatable = updatable;
     this.hooks = hooks; // { beforeInsert?: fn, beforeUpdate?: fn }
+
   }
 
   async count() {
@@ -111,6 +112,25 @@ export default class BaseModel {
     return rows[0] || null;
   }
 
+    async findByIdMulti(id) {
+    const [rows] = await pool.query(
+      `SELECT * FROM ${q(this.table)} WHERE ${q(this.idField)} = ?`,
+      [id]
+    );
+    return rows;
+  }
+
+     async findByFk(fkField, fkValue) {
+
+
+     const [rows] = await pool.query(
+      `SELECT * FROM ${q(this.table)} WHERE ${q(fkField)} = ?`,
+      [fkValue]
+     );
+    
+    return rows;
+  }
+
   async findByName(qstr) {
     if (!this.nameField) throw new Error('findByName não suportado para esta entidade.');
     const [rows] = await pool.query(
@@ -121,6 +141,7 @@ export default class BaseModel {
   }
 
   async create(payload) {
+ 
     if (this.hooks?.beforeInsert) {
       await this.hooks.beforeInsert(payload, { pool, model: this });
     }
@@ -160,4 +181,7 @@ export default class BaseModel {
     );
     return res.affectedRows > 0;
   }
+
+
+
 }
